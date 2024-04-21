@@ -44,8 +44,24 @@ ament_target_dependencies(pick_and_place
 	geometric_shapes
 	moveit_msgs)
 
+add_executable(sim_pick_and_place
+    src/sim_pick_and_place.cpp)
+
+ament_target_dependencies(sim_pick_and_place
+    ament_cmake
+	rclcpp
+	rclcpp_action
+	moveit_core
+	moveit_ros_planning_interface
+	interactive_markers
+	moveit_ros_planning
+	control_msgs
+	geometric_shapes
+	moveit_msgs)
+
 install(TARGETS 
 	pick_and_place
+	sim_pick_and_place
     DESTINATION lib/${PROJECT_NAME}
 )
 

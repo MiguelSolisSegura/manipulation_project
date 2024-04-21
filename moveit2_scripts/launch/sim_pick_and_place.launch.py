@@ -10,15 +10,15 @@ def generate_launch_description():
     moveit_config = MoveItConfigsBuilder("name", package_name="my_moveit_config").to_moveit_configs()
 
     moveit_cpp_node = Node(
-        name="pick_and_place",
+        name="sim_pick_and_place",
         package="moveit2_scripts",
-        executable="pick_and_place",
+        executable="sim_pick_and_place",
         output="screen",
         parameters=[
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
             moveit_config.robot_description_kinematics,
-            {'use_sim_time': False},
+            {'use_sim_time': True},
         ],
     )
 

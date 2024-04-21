@@ -17,14 +17,14 @@ using namespace std::chrono_literals;
 
 // Definition of joint targets: shoulder to twrist
 const std::vector<double> HOME{0.00, -2.50, 1.50, -1.50, -1.55, 0.00};
-const std::vector<double> PRE_GRASP{0.0029, -1.3741, 1.5374, -1.7348, -1.5707, -1.5689};
-const std::vector<double> GRASP{0.0028, -1.2934, 1.7496, -2.0263, -1.5701, -1.5679};
-const std::vector<double> DROP{-3.1387, -1.3741, 1.5374, -1.7348, -1.5707, -1.5689};
+const std::vector<double> PRE_GRASP{-0.4532, -1.491, 1.6726, -1.7519, -1.5719, -2.0230};
+const std::vector<double> GRASP{-0.4536, -1.3326, 1.96773, -2.2062, -1.5717, -2.0234};
+const std::vector<double> DROP{-3.5948, -1.491, 1.6726, -1.7519, -1.5719, -2.0230};
 
 
 // Definition of pose targets: position and orientation
-const std::vector<double> PRE_GRASP_POSE{0.343, 0.132, 0.264, -1.0, 0.00, 0.00, 0.00};
-const std::vector<double> GRASP_POSE{0.343, 0.132, 0.200, -1.0, 0.00, 0.00, 0.00};
+const std::vector<double> PRE_GRASP_POSE{0.34, -0.02, 0.264, -1.0, 0.00, 0.00, 0.00};
+const std::vector<double> GRASP_POSE{0.34, -0.02, 0.17, -1.0, 0.00, 0.00, 0.00};
 
 static const rclcpp::Logger LOGGER = rclcpp::get_logger("pick_and_place");
 
@@ -135,23 +135,24 @@ int main(int argc, char **argv) {
     }
     
     // Close gripper
-    float gripper_value = 0.65;
-    joint_group_positions_gripper[2] = gripper_value;
-    move_group_gripper.setJointValueTarget(joint_group_positions_gripper);
-    RCLCPP_INFO(LOGGER, "Closing gripper: %.3f.", gripper_value);
-    success_gripper = (move_group_gripper.plan(plan_gripper) == moveit::core::MoveItErrorCode::SUCCESS);
-    if (success_gripper) {
-        RCLCPP_INFO(LOGGER, "Plan to actuate gipper: SUCCESS.");
-        RCLCPP_INFO(LOGGER, "Executing command.");
-        move_group_arm.execute(plan_gripper);
-        gripper_value += 0.001;
-    } else {
-        RCLCPP_INFO(LOGGER, "Plan to actuate gipper: FAIL.");
-        RCLCPP_INFO(LOGGER, "Aborting command.");
-        rclcpp::shutdown();
-        return 1;
+    float gripper_value = 0.6;
+    while (gripper_value <= 0.649) {
+        joint_group_positions_gripper[2] = gripper_value;
+        move_group_gripper.setJointValueTarget(joint_group_positions_gripper);
+        RCLCPP_INFO(LOGGER, "Closing gripper: %.3f.", gripper_value);
+        success_gripper = (move_group_gripper.plan(plan_gripper) == moveit::core::MoveItErrorCode::SUCCESS);
+        if (success_gripper) {
+            RCLCPP_INFO(LOGGER, "Plan to actuate gipper: SUCCESS.");
+            RCLCPP_INFO(LOGGER, "Executing command.");
+            move_group_arm.execute(plan_gripper);
+            gripper_value += 0.001;
+        } else {
+            RCLCPP_INFO(LOGGER, "Plan to actuate gipper: FAIL.");
+            RCLCPP_INFO(LOGGER, "Aborting command.");
+            rclcpp::shutdown();
+            return 1;
+        }
     }
-    
     
     // Pre-Grasp position
     setTarget("pre_grasp", joint_group_positions_arm, PRE_GRASP);
