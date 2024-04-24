@@ -6,7 +6,7 @@ import os
 def generate_launch_description():
     package_name = 'get_cube_pose'
     pkg_share_path = get_package_share_directory(package_name)
-    rviz_config_file = os.path.join(pkg_share_path, 'config', 'sim.rviz')
+    rviz_config_file = os.path.join(pkg_share_path, 'config', 'real.rviz')
 
     return LaunchDescription([
         Node(
@@ -22,6 +22,7 @@ def generate_launch_description():
             name='basic_grasping_perception_node',
             output='screen',
             parameters=[{'debug_topics': True}],
+            remappings=[('/wrist_rgbd_depth_sensor/points', '/camera/depth/color/points')]
         ),
         Node(
             package='get_cube_pose',
