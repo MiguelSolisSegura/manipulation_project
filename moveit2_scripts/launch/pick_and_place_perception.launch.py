@@ -8,6 +8,14 @@ from moveit_configs_utils import MoveItConfigsBuilder
 
 def generate_launch_description():
     moveit_config = MoveItConfigsBuilder("name", package_name="my_moveit_config").to_moveit_configs()
+    
+    preception_action_server = Node(
+        package='simple_grasping',
+        executable='basic_grasping_perception_node',
+        name='basic_grasping_perception_node',
+        output='screen',
+        parameters=[{'debug_topics': True}]
+    )
 
     moveit_cpp_node = Node(
         name="pick_and_place_perception",
@@ -22,6 +30,7 @@ def generate_launch_description():
         ],
     )
 
-    return LaunchDescription(
-        [moveit_cpp_node]
-    )
+    return LaunchDescription([
+        preception_action_server,
+        moveit_cpp_node
+    ])

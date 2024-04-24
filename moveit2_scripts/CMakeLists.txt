@@ -16,6 +16,7 @@ find_package(interactive_markers REQUIRED)
 find_package(geometric_shapes REQUIRED)
 find_package(control_msgs REQUIRED)
 find_package(moveit_msgs REQUIRED)
+find_package(grasping_msgs REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -72,7 +73,8 @@ ament_target_dependencies(pick_and_place_perception
 	moveit_ros_planning
 	control_msgs
 	geometric_shapes
-	moveit_msgs)
+	moveit_msgs
+	grasping_msgs)
 
 install(TARGETS 
 	pick_and_place
