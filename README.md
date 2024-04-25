@@ -64,9 +64,9 @@ To test the project with the real UR3e robot, follow these steps:
 2. Connect to the real robot on the scheduled day and time.
 3. Run the following commands to start the Pick & Place task with perception:
 
-   ```bash
-   source ~/ros2_ws/install/setup.bash
-   ros2 launch real_moveit_config move_group.launch.py
-   ros2 launch real_moveit_config moveit_rviz.launch.py
-   ros2 launch moveit2_scripts pick_and_place_perception_real.launch.py
-   ```
+```bash
+source ~/ros2_ws/install/setup.bash
+ros2 launch real_moveit_config move_group.launch.py
+ros2 launch real_moveit_config moveit_rviz.launch.py
+ros2 launch moveit2_scripts pick_and_place_perception_real.launch.py
+```
